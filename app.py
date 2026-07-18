@@ -526,6 +526,13 @@ if stage == "results":
         f'<div class="status-legend">🟢 Passed: {passed_count} &nbsp; 🟠 Gaps: {gap_count} &nbsp; ⚪ Not assessed: {neutral_count}</div>',
         unsafe_allow_html=True,
     )
+    gap_count = len(gaps)
+    personalized_minutes = gap_count * 45
+    personalized_hours = personalized_minutes / 60
+    personalized_cost = gap_count * 10
+    st.caption(f"Full course baseline: {len(COMPETENCIES) * 45 / 60:g} hours, ${len(COMPETENCIES) * 10}.")
+    st.info(f"Your personalized path: {gap_count} modules, ~{personalized_hours:g} hours, ${personalized_cost}")
+    st.caption("Estimated study time, not video length.")
     for index, ((label, description), status) in enumerate(zip(COMPETENCIES, results)):
         if status == "passed":
             st.success(f"✓ {index + 1}. {label}")
@@ -563,15 +570,8 @@ if stage == "results":
 if stage == "complete":
     gaps = st.session_state.get("gap_indexes", [])
     gap_count = len(gaps)
-    estimated_minutes = gap_count * 15
-    estimated_hours, remaining_minutes = divmod(estimated_minutes, 60)
-    full_course_cost = len(COMPETENCIES) * 8
-    path_cost = gap_count * 8
     st.header("You completed your personalized path")
     st.write(f"Full course: {len(COMPETENCIES)} units vs. your path: {gap_count} units")
-    st.write(f"Full course: ${full_course_cost} · Your path: ${path_cost}")
-    st.write(f"Estimated time: {estimated_hours} hours {remaining_minutes} minutes.")
-    st.caption("A simple estimate based on 15 minutes and $8 per gap module.")
     st.subheader("Before / after competency view")
     statuses = st.session_state.get("diagnostic_results", ["not_assessed"] * len(COMPETENCIES))
     cols = st.columns(len(COMPETENCIES))
