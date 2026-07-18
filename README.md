@@ -56,6 +56,7 @@ streamlit run app.py
 - Generated lesson content is not human-reviewed for accuracy — acceptable for a hackathon MVP, but a review layer is the natural next step for production use.
 - Session-based only; no persistent accounts or long-term progress history across sessions yet.
 - Currently supports individual, self-directed learners; an organizational onboarding mode (training built against a company's real schema) and job-posting-targeted learning paths were explored during development and are natural next extensions.
+- Personalized paths currently render as in-app lessons. A natural extension is exporting the consolidated path as a downloadable training deck (PPT) or narrated video course, with time and cost estimates already surfaced in-app as the foundation for that pricing model.
 
 ## License
 

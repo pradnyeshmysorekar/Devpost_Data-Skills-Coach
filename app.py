@@ -562,8 +562,16 @@ if stage == "results":
 
 if stage == "complete":
     gaps = st.session_state.get("gap_indexes", [])
+    gap_count = len(gaps)
+    estimated_minutes = gap_count * 15
+    estimated_hours, remaining_minutes = divmod(estimated_minutes, 60)
+    full_course_cost = len(COMPETENCIES) * 8
+    path_cost = gap_count * 8
     st.header("You completed your personalized path")
-    st.write(f"Full course: {len(COMPETENCIES)} units — a generic platform charges you for all of them. Your personalized path: only the **{len(gaps)}** units you actually needed. You focused your time on exactly what was missing.")
+    st.write(f"Full course: {len(COMPETENCIES)} units vs. your path: {gap_count} units")
+    st.write(f"Full course: ${full_course_cost} · Your path: ${path_cost}")
+    st.write(f"Estimated time: {estimated_hours} hours {remaining_minutes} minutes.")
+    st.caption("A simple estimate based on 15 minutes and $8 per gap module.")
     st.subheader("Before / after competency view")
     statuses = st.session_state.get("diagnostic_results", ["not_assessed"] * len(COMPETENCIES))
     cols = st.columns(len(COMPETENCIES))
