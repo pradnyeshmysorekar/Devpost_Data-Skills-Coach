@@ -571,6 +571,7 @@ if stage == "results":
                 st.session_state.active_module = 0
                 st.session_state.performance_history = {}
                 st.session_state.stage = "complete" if not gaps else "path"
+                st.session_state.scroll_to_top = True
                 progress.progress(1.0, text=f"Personalized path ready ({len(gaps)} modules)")
                 status.success("Your personalized learning path is ready.")
                 st.rerun()
@@ -580,6 +581,8 @@ if stage == "results":
 
 if stage == "complete":
     gaps = st.session_state.get("gap_indexes", [])
+    if st.session_state.pop("scroll_to_top", False):
+        scroll_to_top()
     gap_count = len(gaps)
     st.header("You completed your personalized path")
     st.write(f"Full course: {len(COMPETENCIES)} units vs. your path: {gap_count} units")
@@ -600,6 +603,9 @@ if stage == "complete":
         reset_course()
         st.rerun()
     st.stop()
+
+if st.session_state.pop("scroll_to_top", False):
+    scroll_to_top()
 
 modules = st.session_state.modules
 performance_history = st.session_state.setdefault("performance_history", {})
