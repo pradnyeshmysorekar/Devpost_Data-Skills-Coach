@@ -376,13 +376,24 @@ def scroll_to_top() -> None:
         """<script>
         const scroll = () => {
           window.scrollTo(0, 0);
-          try { window.parent.scrollTo(0, 0); } catch (e) {}
-          try { window.parent.document.documentElement.scrollTop = 0; } catch (e) {}
-          try { window.parent.document.body.scrollTop = 0; } catch (e) {}
+          try {
+            const doc = window.parent.document;
+            window.parent.scrollTo(0, 0);
+            doc.documentElement.scrollTop = 0;
+            doc.body.scrollTop = 0;
+            [
+              doc.querySelector('[data-testid="stAppViewContainer"]'),
+              doc.querySelector('[data-testid="stMain"]'),
+              doc.querySelector('section.main'),
+              doc.querySelector('.main')
+            ].filter(Boolean).forEach((el) => el.scrollTo(0, 0));
+          } catch (e) {}
         };
         scroll();
         setTimeout(scroll, 50);
         setTimeout(scroll, 250);
+        setTimeout(scroll, 600);
+        setTimeout(scroll, 1000);
         </script>""",
         height=1,
     )
